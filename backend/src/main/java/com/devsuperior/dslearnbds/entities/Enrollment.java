@@ -23,19 +23,19 @@ public class Enrollment implements Serializable {
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant refundMoment;
-	private boolean avaliable;
+	private boolean available;
 	private boolean onlyUpdate;
 
 	public Enrollment() {
 	}
 
-	public Enrollment(EnrollmentPK id, Instant enrollMoment, Instant refundMoment, boolean avaliable,
-			boolean onlyUpdate, User user, Offer offer) {
+	public Enrollment(User user, Offer offer, EnrollmentPK id, Instant enrollMoment, Instant refundMoment,
+			boolean available, boolean onlyUpdate) {
 		super();
 		this.id = id;
 		this.enrollMoment = enrollMoment;
 		this.refundMoment = refundMoment;
-		this.avaliable = avaliable;
+		this.available = available;
 		this.onlyUpdate = onlyUpdate;
 		id.setUser(user);
 		id.setOffer(offer);
@@ -74,11 +74,11 @@ public class Enrollment implements Serializable {
 	}
 
 	public boolean isAvaliable() {
-		return avaliable;
+		return available;
 	}
 
 	public void setAvaliable(boolean avaliable) {
-		this.avaliable = avaliable;
+		this.available = avaliable;
 	}
 
 	public boolean isOnlyUpdate() {
