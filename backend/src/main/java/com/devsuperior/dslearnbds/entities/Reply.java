@@ -2,9 +2,7 @@ package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,18 +15,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_topic")
-public class Topic implements Serializable {
+@Table(name = "tb_reply")
+public class Reply implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String title;
 
 	@Column(columnDefinition = "TEXT") // quando maior que 255 caracteres
 	private String body;
@@ -37,42 +33,27 @@ public class Topic implements Serializable {
 	private Instant moment;
 
 	@ManyToOne // @ManyToOne = vai no construtor e nos geters and seters
+	@JoinColumn(name = "topic_id")
+	private Topic topic;
+
+	@ManyToOne // @ManyToOne = vai no construtor e nos geters and seters
 	@JoinColumn(name = "author_id")
 	private User author;
 
-	@ManyToOne
-	@JoinColumn(name = "offer_id")
-	private Offer offer;
-
-	@ManyToOne
-	@JoinColumn(name = "lesson_id")
-	private Lesson lesson;
-
-	@ManyToOne
-	@JoinColumn(name = "reply_id")
-	private Reply answer;
-	
-	@OneToMany(mappedBy = "topic")
-	private List<Reply> replies = new ArrayList<>();
-
 	@ManyToMany // inserir somente o getLikes() (geters and seters)
-	@JoinTable(name = "tb_topic_likes", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "tb_reply_likes", joinColumns = @JoinColumn(name = "reply_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> likes = new HashSet<>();
 
-	public Topic() {
+	public Reply() {
 	}
 
-	public Topic(Long id, String title, String body, Instant moment, User author, Offer offer, Lesson lesson,
-			Reply answer) {
+	public Reply(Long id, String body, Instant moment, Topic topic, User author) {
 		super();
 		this.id = id;
-		this.title = title;
 		this.body = body;
 		this.moment = moment;
+		this.topic = topic;
 		this.author = author;
-		this.offer = offer;
-		this.lesson = lesson;
-		this.answer = answer;
 	}
 
 	public Long getId() {
@@ -81,14 +62,6 @@ public class Topic implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getBody() {
@@ -107,40 +80,20 @@ public class Topic implements Serializable {
 		this.moment = moment;
 	}
 
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
+
 	public User getAuthor() {
 		return author;
 	}
 
 	public void setAuthor(User author) {
 		this.author = author;
-	}
-
-	public Offer getOffer() {
-		return offer;
-	}
-
-	public void setOffer(Offer offer) {
-		this.offer = offer;
-	}
-
-	public Lesson getLesson() {
-		return lesson;
-	}
-
-	public void setLesson(Lesson lesson) {
-		this.lesson = lesson;
-	}
-
-	public Reply getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(Reply answer) {
-		this.answer = answer;
-	}
-
-	public List<Reply> getReplies() {
-		return replies;
 	}
 
 	public Set<User> getLikes() {
@@ -160,7 +113,7 @@ public class Topic implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Topic other = (Topic) obj;
+		Reply other = (Reply) obj;
 		return Objects.equals(id, other.id);
 	}
 
