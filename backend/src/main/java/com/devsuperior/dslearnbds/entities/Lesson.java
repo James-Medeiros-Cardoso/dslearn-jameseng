@@ -32,7 +32,7 @@ public abstract class Lesson implements Serializable {
 	private String title;
 	private Integer position;
 
-	@ManyToOne // mapeamento
+	@ManyToOne // @ManyToOne = vai no construtor e nos geters and seters
 	@JoinColumn(name = "section_id") // mapeamento da chave estrangeira
 	private Section section;
 	
