@@ -32,9 +32,9 @@ public class Offer implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant endMoment;
 
-	@ManyToOne // mapeamento
-	@JoinColumn(name = "course_id") // mapeamento da chave estrangeira
-	private Course course; // associação
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	private Course course;
 	
 	@OneToMany(mappedBy = "offer") //um para muitos
 	private List<Resource> resources = new ArrayList<>();
